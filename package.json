@@ -29,11 +29,13 @@
   },
   "type": "module",
   "dependencies": {
+    "@lucia-auth/adapter-postgresql": "^2.0.2",
     "@tanstack/svelte-query": "^5.12.1",
     "@trpc/client": "^10.44.1",
     "@trpc/server": "^10.44.1",
     "devalue": "^4.3.2",
     "drizzle-orm": "^0.29.1",
+    "lucia": "^2.7.4",
     "postgres": "^3.4.3",
     "trpc-svelte-query": "^2.0.5",
     "zod": "^3.22.4"
