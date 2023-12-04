@@ -1,0 +1,9 @@
+import { LOGIN_REDIRECT } from "$env/static/private";
+import { redirect } from "@sveltejs/kit";
+import type { PageServerLoad } from "./$types";
+
+export const load: PageServerLoad = async ({ locals }) => {
+	const session = await locals.auth.validate();
+	if (session) throw redirect(301, LOGIN_REDIRECT ?? "/");
+	return {};
+};

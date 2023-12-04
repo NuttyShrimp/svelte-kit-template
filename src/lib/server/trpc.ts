@@ -1,18 +1,33 @@
 import { transformer } from "$lib/trpc/transformer";
-import { initTRPC } from "@trpc/server";
-import type { Context } from "./context";
-import { createTRPCSvelteServer } from "trpc-svelte-query/server";
-import { createContext } from "./context";
-import { appRouter } from "./routes/_app";
+import type { RequestEvent } from "@sveltejs/kit";
+import { TRPCError, initTRPC } from "@trpc/server";
+import {} from "@trpc/server";
+import type { Session } from "lucia";
 
-const t = initTRPC.context<Context>().create({
-  transformer,
+export const createContext = async ({ locals }: RequestEvent): Promise<{ session: Session | null }> => {
+	const session = await locals.auth.validate();
+	return {
+		session,
+	};
+};
+
+const t = initTRPC.context<typeof createContext>().create({
+	transformer,
 });
 
 export const router = t.router;
 
-export const trpcServer = createTRPCSvelteServer({
-  endpoint: "/api/trpc",
-  router: appRouter,
-  createContext,
+export const publicProcedure = t.procedure;
+
+const enforceUserAuthentication = t.middleware(({ ctx, next }) => {
+	if (!ctx.session.user) {
+		throw new TRPCError({ code: "UNAUTHORIZED" });
+	}
+	return next({
+		ctx: {
+			session: { ...ctx.session, user: ctx.session.user },
+		},
+	});
 });
+
+export const protectedProcedure = t.procedure.use(enforceUserAuthentication);
