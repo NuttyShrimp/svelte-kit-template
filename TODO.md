@@ -1,0 +1,5 @@
+- [-] Drizzle
+- [x] Postgres in flake
+- [ ] Lucia auth
+- [ ] Public + protected procedures + scoped procedures
+- [ ] bee-queue for mails
