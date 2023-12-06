@@ -1,6 +1,6 @@
 import { transformer } from "$lib/trpc/transformer";
 import type { RequestEvent } from "@sveltejs/kit";
-import { TRPCError, initTRPC } from "@trpc/server";
+import { TRPCError, type inferAsyncReturnType, initTRPC } from "@trpc/server";
 import {} from "@trpc/server";
 import type { Session } from "lucia";
 
@@ -11,7 +11,7 @@ export const createContext = async ({ locals }: RequestEvent): Promise<{ session
 	};
 };
 
-const t = initTRPC.context<typeof createContext>().create({
+const t = initTRPC.context<inferAsyncReturnType<typeof createContext>>().create({
 	transformer,
 });
 
