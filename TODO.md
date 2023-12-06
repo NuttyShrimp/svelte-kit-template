@@ -1,5 +1,9 @@
-- [-] Drizzle
+- [x] Drizzle
 - [x] Postgres in flake
-- [ ] Lucia auth
-- [ ] Public + protected procedures + scoped procedures
+- [x] Lucia auth
+- [x] Public + protected procedures + scoped procedures
 - [ ] bee-queue for mails
+    - [x] Mail generation with template names
+    - [ ] Dev server to preview emails
+    - [ ] Typed props?
+- [ ] Example to showcase trpc usage in folder or other repo
