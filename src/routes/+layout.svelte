@@ -1,4 +1,5 @@
 <script lang="ts">
+  import "../app.pcss";
   import { trpc } from "$lib/trpc";
   import { QueryClientProvider } from "@tanstack/svelte-query";
   import type { LayoutData } from "./$types";
