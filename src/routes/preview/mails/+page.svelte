@@ -37,7 +37,9 @@
 <hr class="py-2" />
 <div class="flex justify-center items-center">
   {#if $template.isSuccess}
-    {@html $template.data}
+    {@html $template.data.startsWith("<")
+      ? $template.data
+      : `<pre>${$template.data}</pre>`}
   {:else if $template.isError}
     <p>Error: {$template.error.message}</p>
   {:else}
