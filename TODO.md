@@ -4,6 +4,6 @@
 - [x] Public + protected procedures + scoped procedures
 - [ ] bee-queue for mails
     - [x] Mail generation with template names
-    - [ ] Dev server to preview emails
-    - [ ] Typed props?
+    - [x] Dev server to preview emails
+    - [ ] Props in text templates
 - [ ] Example to showcase trpc usage in folder or other repo

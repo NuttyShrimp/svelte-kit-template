@@ -5,19 +5,19 @@ import type { SvelteComponent } from "svelte";
 import type { create_ssr_component } from "svelte/internal";
 
 const stripSvelteClasses = (html: string) =>
-	html.replaceAll(/class="s-[\w-]+"/g, "").replaceAll(/data-svelte-h="svelte-[\w]+"/g, "");
+  html.replaceAll(/class="s-[\w-]+"/g, "").replaceAll(/data-svelte-h="svelte-[\w]+"/g, "");
 
 // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-export const renderTemplate = <Props extends Record<string, any>>(
-	component: new (...args: any[]) => SvelteComponent<Props>,
-	props: Props,
+export const renderTemplate = <Props extends Record<string, unknown>>(
+  component: new (...args: unknown[]) => SvelteComponent<Props>,
+  props: Props,
 ) => {
-	const ssrComponent = component as unknown as ReturnType<typeof create_ssr_component>;
+  const ssrComponent = component as unknown as ReturnType<typeof create_ssr_component>;
 
-	// Render the component to MJML
-	const { html: body, css } = ssrComponent.render(props);
+  // Render the component to MJML
+  const { html: body, css } = ssrComponent.render(props);
 
-	const mjml = `
+  const mjml = `
     <mjml>
       <mj-head>
         <mj-style inline="inline">
@@ -46,9 +46,9 @@ ${stripSvelteClasses(body)}
       </mj-body>
     </mjml>`;
 
-	// Render MJML to HTML
-	const { html, errors } = mjml2html(mjml);
-	if (errors.length > 0) console.warn(errors);
+  // Render MJML to HTML
+  const { html, errors } = mjml2html(mjml);
+  if (errors.length > 0) console.warn(errors);
 
-	return html;
+  return html;
 };
