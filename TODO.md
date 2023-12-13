@@ -5,5 +5,6 @@
 - [ ] bee-queue for mails
     - [x] Mail generation with template names
     - [x] Dev server to preview emails
-    - [ ] Props in text templates
+    - [x] Props in text templates
+- [ ] Get skeleton UI lib fully working (not all css things are applied for some reason?)
 - [ ] Example to showcase trpc usage in folder or other repo
