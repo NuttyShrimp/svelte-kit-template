@@ -3,7 +3,6 @@ import { MAILGUN_API_KEY } from "$env/static/private";
 import FormData from "form-data";
 import Mailgun from "mailgun.js";
 import { renderComponent, renderHtmlTemplate } from "./render";
-import mjml2html from "mjml";
 
 const mailgun = new Mailgun(FormData);
 const mailDomain = MAIL_FROM.replace(/^.+<.+@(.+)>$/, "$1");
@@ -12,14 +11,17 @@ const svelteEntries = import.meta.glob("./templates/*.html.svelte", { eager: tru
 const textEntries = import.meta.glob("./templates/*.text.svelte", { eager: true });
 const uniqTemplateKeys = new Set(Object.keys(svelteEntries).concat(Object.keys(textEntries)));
 
-export const loadedTemplates = [...uniqTemplateKeys].reduce<{ [k: string]: { svelte: boolean; text: boolean; } }>((obj, v) => {
-  const key = v.replaceAll(/^\.\/templates\/(.+)\.[^.]+\.(svelte)$/g, "$1")
-  obj[key] = {
-    svelte: `./templates/${key}.html.svelte` in svelteEntries,
-    text: `./templates/${key}.text.svelte` in textEntries,
-  }
-  return obj;
-}, {});
+export const loadedTemplates = [...uniqTemplateKeys].reduce<{ [k: string]: { svelte: boolean; text: boolean } }>(
+  (obj, v) => {
+    const key = v.replaceAll(/^\.\/templates\/(.+)\.[^.]+\.(svelte)$/g, "$1");
+    obj[key] = {
+      svelte: `./templates/${key}.html.svelte` in svelteEntries,
+      text: `./templates/${key}.text.svelte` in textEntries,
+    };
+    return obj;
+  },
+  {},
+);
 
 export const sendMail = async (recepient: string, templateName: string, props?: Record<string, unknown>) => {
   const htmlContent = getSvelteMailContent(templateName, props);
@@ -54,7 +56,7 @@ export const getMailContent = (type: "svelte" | "text", templateName: string, pr
       return;
     }
   }
-}
+};
 
 const getSvelteMailContent = (templateName: string, props?: Record<string, unknown>) => {
   const htmlContent = svelteEntries[`./templates/${templateName}.html.svelte`].default;
@@ -63,7 +65,7 @@ const getSvelteMailContent = (templateName: string, props?: Record<string, unkno
   }
   const generatedTemplate = renderHtmlTemplate(htmlContent, props ?? {});
   return generatedTemplate;
-}
+};
 
 const getTextMailContent = (templateName: string, props?: Record<string, unknown>) => {
   const textContent = textEntries[`./templates/${templateName}.text.svelte`].default;
@@ -72,4 +74,4 @@ const getTextMailContent = (templateName: string, props?: Record<string, unknown
   }
   const filledContent = renderComponent(textContent, props);
   return filledContent.body;
-}
+};

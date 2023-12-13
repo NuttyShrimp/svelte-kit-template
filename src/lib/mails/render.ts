@@ -5,26 +5,25 @@ import type { SvelteComponent } from "svelte";
 import type { create_ssr_component } from "svelte/internal";
 
 const stripSvelteClasses = (html: string) =>
-  html.replaceAll(/class="s-[\w-]+"/g, "").replaceAll(/data-svelte-h="svelte-[\w]+"/g, "");
+	html.replaceAll(/class="s-[\w-]+"/g, "").replaceAll(/data-svelte-h="svelte-[\w]+"/g, "");
 
 export const renderComponent = <Props extends Record<string, unknown>>(
-  component: new (...args: unknown[]) => SvelteComponent<Props>,
-  props?: Props,
-): { css: Record<string, unknown>, body: string } => {
-  const ssrComponent = component as unknown as ReturnType<typeof create_ssr_component>;
+	component: new (...args: unknown[]) => SvelteComponent<Props>,
+	props?: Props,
+): { css: Record<string, unknown>; body: string } => {
+	const ssrComponent = component as unknown as ReturnType<typeof create_ssr_component>;
 
-  // eslint-disable-next-line prefer-const
-  const { html: body, css } = ssrComponent.render(props);
-  return { body, css };
-}
-
+	// eslint-disable-next-line prefer-const
+	const { html: body, css } = ssrComponent.render(props);
+	return { body, css };
+};
 
 export const renderHtmlTemplate = <Props extends Record<string, unknown>>(
-  component: new (...args: unknown[]) => SvelteComponent<Props>,
-  props: Props,
+	component: new (...args: unknown[]) => SvelteComponent<Props>,
+	props: Props,
 ) => {
-  const { body, css } = renderComponent(component, props);
-  const mjml = `
+	const { body, css } = renderComponent(component, props);
+	const mjml = `
     <mjml>
       <mj-head>
         <mj-style inline="inline">
@@ -53,9 +52,9 @@ export const renderHtmlTemplate = <Props extends Record<string, unknown>>(
       </mj-body>
     </mjml>`;
 
-  // Render MJML to HTML
-  const { html, errors } = mjml2html(mjml);
-  if (errors.length > 0) console.warn(errors);
+	// Render MJML to HTML
+	const { html, errors } = mjml2html(mjml);
+	if (errors.length > 0) console.warn(errors);
 
-  return html;
+	return html;
 };
