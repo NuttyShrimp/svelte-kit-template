@@ -13,7 +13,6 @@ export const renderComponent = <Props extends Record<string, unknown>>(
 ): { css: Record<string, unknown>; body: string } => {
 	const ssrComponent = component as unknown as ReturnType<typeof create_ssr_component>;
 
-	// eslint-disable-next-line prefer-const
 	const { html: body, css } = ssrComponent.render(props);
 	return { body, css };
 };
