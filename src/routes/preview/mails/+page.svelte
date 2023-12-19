@@ -8,8 +8,12 @@
     popup,
   } from "@skeletonlabs/skeleton";
 
-  let selectedTemplate: string = "";
+  let selectedTemplate: string = $page.url.searchParams.get("template") ?? "";
   let selectedTemplateType: "svelte" | "text" = "svelte";
+
+  let templateProps: Record<string, unknown> = JSON.parse(
+    $page.url.searchParams.get("props") ?? "{}",
+  );
 
   let templatePopupSettings: PopupSettings = {
     event: "focus-click",
@@ -27,6 +31,7 @@
     {
       template: selectedTemplate,
       type: selectedTemplateType,
+      props: templateProps,
     },
     {
       enabled: selectedTemplate != "",
