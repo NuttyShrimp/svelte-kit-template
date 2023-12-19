@@ -21,7 +21,7 @@
       in
       with pkgs; {
         devShells.default = pkgs.devshell.mkShell {
-          packages = [ nodejs nodePackages.pnpm postgresql_15 biome ];
+          packages = [ nodejs nodePackages.pnpm postgresql_16 biome ];
           commands = [
             {
               name = "pg:setup";
