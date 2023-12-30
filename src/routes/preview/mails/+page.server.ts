@@ -4,7 +4,7 @@ import { redirect } from "@sveltejs/kit";
 import type { PageServerLoad } from "../../login/$types";
 
 export const load: PageServerLoad = async ({ url }) => {
-	if (!dev) throw redirect(301, "/");
+	if (!dev) redirect(301, "/");
 	return {
 		templates: loadedTemplates,
 	};
