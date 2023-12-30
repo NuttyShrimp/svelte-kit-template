@@ -6,7 +6,7 @@ The boilerplates includes the following libraries/framework
 
 - [Sveltekit](kit.svelte.dev)
 - [Drizzle-ORM](orm.drizzle.team/docs/overview)
-- [Skeleton UI](skeleton.dev)
+- [ShadCN](www.shadcn-svelte.com)
 - [Lucia-auth](https://lucia-auth.com/)
 - [TRPC-svelte-query](https://github.com/ottomated/trpc-svelte-query), this is a ready to go combination of [Tanstack-query](tanstack.com/query/latest/docs/svelte/overview) and [TRPC](trpc.io)
 - [Fontawesome](fontawesome.com)
