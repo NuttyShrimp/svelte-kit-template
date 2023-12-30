@@ -22,6 +22,7 @@
     "autoprefixer": "^10.4.14",
     "drizzle-kit": "^0.20.6",
     "husky": "^8.0.0",
+    "lint-staged": "^15.2.0",
     "postcss": "^8.4.24",
     "postcss-load-config": "^4.0.1",
     "svelte": "^4.2.7",
@@ -63,5 +64,10 @@
     "trpc-svelte-query": "^2.0.5",
     "tsx": "^4.6.2",
     "zod": "^3.22.4"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,svelte}": [
+      "biome check --apply --log-level=debug"
+    ]
   }
 }
