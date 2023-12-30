@@ -11,6 +11,9 @@
     "enabled": true,
     "rules": {
       "recommended": true
-    }
+    },
+    "ignore": [
+      "./src/types/svelte-internal.d.ts"
+    ]
   }
 }

@@ -13,6 +13,7 @@ export const renderComponent = <Props extends Record<string, unknown>>(
 ): { css: Record<string, unknown>; body: string } => {
 	const ssrComponent = component as unknown as ReturnType<typeof create_ssr_component>;
 
+	// when upgrading to svelte 5: https://github.com/sveltejs/svelte/issues/9377#issuecomment-1801392220
 	const { html: body, css } = ssrComponent.render(props);
 	return { body, css };
 };
