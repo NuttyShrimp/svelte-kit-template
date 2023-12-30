@@ -18,7 +18,6 @@ jobs:
         with:
           node-version: 18
           cache: 'pnpm'
-        cache: 'pnpm'
       - name: Install dependencies
         run: pnpm install
       - run: pnpm format
