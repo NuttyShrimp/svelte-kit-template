@@ -20,5 +20,6 @@ jobs:
           cache: 'pnpm'
       - name: Install dependencies
         run: pnpm install
+      - run: cp .env.template .env
       - run: pnpm format
       - run: pnpm check

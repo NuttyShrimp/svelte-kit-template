@@ -6,11 +6,6 @@ on:
   pull_request:
   workflow_dispatch:
 
-
-concurrency:
-  group: "build"
-  cancel-in-progress: true
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -26,4 +21,5 @@ jobs:
           cache: 'pnpm'
       - name: Install dependencies
         run: pnpm install
+      - run: cp .env.template .env
       - run: pnpm build
