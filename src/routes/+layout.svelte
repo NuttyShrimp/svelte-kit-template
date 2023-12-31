@@ -12,5 +12,5 @@
 
 <QueryClientProvider client={queryClient}>
   <ModeWatcher />
-  <slot />
+  <slot class="prose" />
 </QueryClientProvider>
