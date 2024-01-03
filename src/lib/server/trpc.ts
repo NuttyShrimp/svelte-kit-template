@@ -20,7 +20,7 @@ export const router = t.router;
 export const publicProcedure = t.procedure;
 
 const enforceUserAuthentication = t.middleware(({ ctx, next }) => {
-	if (!ctx.session.user) {
+	if (!ctx.session?.user) {
 		throw new TRPCError({ code: "UNAUTHORIZED" });
 	}
 	return next({
