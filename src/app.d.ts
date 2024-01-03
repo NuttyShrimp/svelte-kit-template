@@ -10,7 +10,7 @@ declare global {
 /// <reference types="lucia" />
 declare global {
 	namespace Lucia {
-		type Auth = import("$lib/server/auth").Auth;
+		type Auth = import("$lib/server/lucia").Auth;
 		// Declare the attributes here that you return inn `lucia.getUserAttributes`
 		type DatabaseUserAttributes = {
 			firstName: string;
