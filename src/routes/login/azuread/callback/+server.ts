@@ -1,3 +1,4 @@
+import { LOGIN_REDIRECT } from "$env/static/private";
 import { auth, azureADAuth } from "$lib/server/lucia.js";
 import { OAuthRequestError } from "@lucia-auth/oauth";
 import type { RequestHandler } from "@sveltejs/kit";
@@ -8,7 +9,7 @@ export const GET: RequestHandler = async ({ url, cookies, locals }) => {
 		return new Response(null, {
 			status: 302,
 			headers: {
-				Location: "/",
+				Location: LOGIN_REDIRECT ?? "/",
 			},
 		});
 	}
@@ -52,7 +53,7 @@ export const GET: RequestHandler = async ({ url, cookies, locals }) => {
 		return new Response(null, {
 			status: 302,
 			headers: {
-				Location: "/",
+				Location: LOGIN_REDIRECT ?? "/",
 			},
 		});
 	} catch (e) {
