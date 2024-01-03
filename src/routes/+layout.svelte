@@ -10,6 +10,10 @@
   $: queryClient = trpc.hydrateFromServer(data.trpc);
 </script>
 
+<svelte:head>
+  <title>Student Kick-off</title>
+</svelte:head>
+
 <QueryClientProvider client={queryClient}>
   <ModeWatcher />
   <slot class="prose" />
