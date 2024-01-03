@@ -1,5 +1,6 @@
 <script lang="ts">
   import { Button } from "$lib/components/ui/button";
+  import * as DropdownMenu from "$lib/components/ui/dropdown-menu";
   import type { User } from "lucia";
 
   export let user: User;
@@ -18,6 +19,14 @@
       <img class="max-w-8 max-h-8" alt={"SKO logo"} src={"./logo.png"} />
     </a>
     <span class="font-bold">Application Name</span>
+    <DropdownMenu.Root>
+      <DropdownMenu.Trigger asChild let:builder>
+        <Button builders={[builder]} size="sm" variant="ghost">List</Button>
+      </DropdownMenu.Trigger>
+      <DropdownMenu.Content class="w-32">
+        <DropdownMenu.Item href="/">Test link</DropdownMenu.Item>
+      </DropdownMenu.Content>
+    </DropdownMenu.Root>
   </div>
   <div class="flex items-center gap-2">
     <p class="text-xs">
