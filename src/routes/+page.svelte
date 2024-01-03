@@ -6,7 +6,7 @@
 
 <div class="flex items-center justify-center h-screen">
   <div class="flex-1 h-full hidden lg:flex border-r border-r-gray-500">
-    <img class="object-cover m-0" alt="cover image" src={coverImage} />
+    <img class="object-cover m-0" alt="cover" src={coverImage} />
   </div>
   <div class="flex-1 lg:p-8 p-2">
     <div
