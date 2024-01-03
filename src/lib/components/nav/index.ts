@@ -1,3 +1,3 @@
-import NavBar from "./NavBar.svelte";
+import Navbar from "./Navbar.svelte";
 
-export { NavBar };
+export { Navbar };
