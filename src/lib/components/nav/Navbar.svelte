@@ -30,8 +30,8 @@
       <img class="max-w-8 max-h-8" alt={"SKO logo"} src={"/logo.png"} />
     </a>
     <span class="font-bold">{applicationName}</span>
-    <DropdownMenu.Root>
-      {#each navEntries as entry}
+    {#each navEntries as entry}
+      <DropdownMenu.Root>
         {#if entry.href}
           <Button href={entry.href} size="sm" variant="ghost">
             {entry.title}
@@ -50,8 +50,8 @@
             {/each}
           </DropdownMenu.Content>
         {/if}
-      {/each}
-    </DropdownMenu.Root>
+      </DropdownMenu.Root>
+    {/each}
   </div>
   <div class="flex items-center gap-2">
     <LightSwitch />
