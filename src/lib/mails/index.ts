@@ -1,6 +1,6 @@
 import { building, dev } from "$app/environment";
-import { MAIL_FROM } from "$env/static/private";
-import { MAILGUN_API_KEY } from "$env/static/private";
+import { env } from "$env/dynamic/private";
+import { MAILGUN_API_KEY, MAIL_FROM } from "$env/static/private";
 import Queue from "bee-queue";
 import FormData from "form-data";
 import Mailgun from "mailgun.js";
@@ -18,7 +18,12 @@ const uniqTemplateKeys = new Set(Object.keys(svelteEntries).concat(Object.keys(t
 
 let mailQueue: Queue;
 if (!building) {
-	mailQueue = new Queue<{ template: string; props?: Record<string, unknown>; recepient: string }>("sample-mails");
+	mailQueue = new Queue<{ template: string; props?: Record<string, unknown>; recepient: string }>("sample-mails", {
+		redis: {
+			host: env.REDIS_HOST ?? "127.0.0.1",
+			port: env.REDIS_PORT ?? 6379,
+		},
+	});
 	mailQueue.process((j) => {
 		processMailJob(j.data.recepient, j.data.template, j.data.props);
 	});

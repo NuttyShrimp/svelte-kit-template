@@ -46,7 +46,7 @@ export const renderHtmlTemplate = <Props extends Record<string, unknown>>(
           </mj-column>
 
           <mj-column width="25%">
-            <mj-image src="${dev ? "http" : "https"}://${ORIGIN}/logo.png" width="120px" />
+            <mj-image src="${dev ? "" : ORIGIN}/logo.png" width="120px" />
           </mj-column>
         </mj-section>
       </mj-body>
