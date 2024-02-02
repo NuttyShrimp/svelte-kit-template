@@ -47,6 +47,7 @@
     "@trpc/client": "^10.45.0",
     "@trpc/server": "^10.45.0",
     "@types/mjml": "^4.7.4",
+    "@types/node": "^20.11.15",
     "bee-queue": "^1.7.1",
     "bits-ui": "^0.15.1",
     "clsx": "^2.1.0",
