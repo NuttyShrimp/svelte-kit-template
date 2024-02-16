@@ -1,11 +1,14 @@
 import { LOGIN_REDIRECT } from "$env/static/private";
+import { user } from "$lib/db/schema";
+import { db } from "$lib/server/db";
 import { auth, azureADAuth } from "$lib/server/lucia.js";
-import { OAuthRequestError } from "@lucia-auth/oauth";
 import type { RequestHandler } from "@sveltejs/kit";
+import { OAuth2RequestError } from "arctic";
+import { eq } from "drizzle-orm";
+import { generateId } from "lucia";
 
 export const GET: RequestHandler = async ({ url, cookies, locals }) => {
-	const session = await locals.auth.validate();
-	if (session) {
+	if (locals.session) {
 		return new Response(null, {
 			status: 302,
 			headers: {
@@ -27,37 +30,53 @@ export const GET: RequestHandler = async ({ url, cookies, locals }) => {
 	}
 
 	try {
-		const { getExistingUser, azureADUser, createUser } = await azureADAuth.validateCallback(code, codeVerifier);
-		const getUser = async () => {
-			const existingUser = await getExistingUser();
-			if (existingUser) return existingUser;
-			if (!azureADUser.email) {
-				throw new Error("This azure user does not have an email attached");
-			}
-			const user = await createUser({
-				attributes: {
-					firstName: azureADUser.given_name,
-					lastName: azureADUser.family_name,
-					email: azureADUser.email,
-				},
-			});
-			return user;
-		};
+		const tokens = await azureADAuth.validateAuthorizationCode(code, codeVerifier);
 
-		const user = await getUser();
-		const session = await auth.createSession({
-			userId: user.userId,
-			attributes: {},
+		const azureADRes = await fetch("https://graph.microsoft.com/v1.0/me", {
+			headers: {
+				authorization: `Bearer ${tokens.accessToken}`,
+			},
 		});
-		locals.auth.setSession(session);
+		const azureADUser: AzureADUser | AzureADError = await azureADRes.json();
+
+		if ("error" in azureADUser) {
+			throw new Error(azureADUser.error.message);
+		}
+
+		const existingUser = await db.query.user.findFirst({
+			where: eq(user.uid, azureADUser.id),
+		});
+
+		let userId;
+
+		if (!existingUser) {
+			userId = generateId(15);
+			await db.insert(user).values({
+				id: userId,
+				uid: azureADUser.id,
+				email: azureADUser.mail,
+				firstName: azureADUser.givenName,
+				lastName: azureADUser.surname,
+			});
+		} else {
+			userId = existingUser?.id;
+		}
+
+		const session = await auth.createSession(userId, {});
+		const sessionCookie = auth.createSessionCookie(session.id);
+		cookies.set(sessionCookie.name, sessionCookie.value, {
+			path: ".",
+			...sessionCookie.attributes,
+		});
+
 		return new Response(null, {
 			status: 302,
 			headers: {
-				Location: LOGIN_REDIRECT ?? "/",
+				Location: "/",
 			},
 		});
 	} catch (e) {
-		if (e instanceof OAuthRequestError) {
+		if (e instanceof OAuth2RequestError) {
 			// invalid code
 			return new Response(null, {
 				status: 400,
@@ -68,4 +87,20 @@ export const GET: RequestHandler = async ({ url, cookies, locals }) => {
 			status: 500,
 		});
 	}
+};
+
+type AzureADUser = {
+	// The uid
+	id: string;
+	displayName: string;
+	givenName: string;
+	mail: string;
+	surname: string;
+};
+
+type AzureADError = {
+	error: {
+		code: string;
+		message: string;
+	};
 };

@@ -2,22 +2,9 @@
 declare global {
 	namespace App {
 		interface Locals {
-			auth: import("lucia").AuthRequest;
+			user: import("lucia").User | null;
+			session: import("lucia").Session | null;
 		}
-	}
-}
-
-/// <reference types="lucia" />
-declare global {
-	namespace Lucia {
-		type Auth = import("$lib/server/lucia").Auth;
-		// Declare the attributes here that you return inn `lucia.getUserAttributes`
-		type DatabaseUserAttributes = {
-			firstName: string;
-			lastName: string;
-			email: string;
-		};
-		type DatabaseSessionAttributes = Record<string, never>;
 	}
 }
 
