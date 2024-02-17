@@ -7,18 +7,22 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model session {
-  id         String   @id
-  user_id    String
-  expires_at DateTime @db.Timestamptz(6)
-  user       user     @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "session_user_id_user_id_fk")
+model Session {
+  id        String   @id
+  userId    String   @map("user_id")
+  expiresAt DateTime @map("expires_at") @db.Timestamptz(6)
+  user      User     @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "session_user_id_user_id_fk")
+
+  @@map("sessions")
 }
 
-model user {
+model User {
   id        String    @id
   uid       String?   @unique(map: "user_uid_unique")
-  firstName String?
-  lastName  String?
+  firstName String?   @map("first_name")
+  lastName  String?   @map("last_name")
   email     String?
-  session   session[]
+  session   Session[]
+
+  @@map("users")
 }

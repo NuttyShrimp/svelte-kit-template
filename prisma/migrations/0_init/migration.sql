@@ -1,26 +1,26 @@
 -- CreateTable
-CREATE TABLE "session" (
+CREATE TABLE "sessions" (
     "id" TEXT NOT NULL,
     "user_id" TEXT NOT NULL,
     "expires_at" TIMESTAMPTZ(6) NOT NULL,
 
-    CONSTRAINT "session_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "sessions_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "user" (
+CREATE TABLE "users" (
     "id" TEXT NOT NULL,
     "uid" TEXT,
-    "firstName" TEXT,
-    "lastName" TEXT,
+    "first_name" TEXT,
+    "last_name" TEXT,
     "email" TEXT,
 
-    CONSTRAINT "user_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "users_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "user_uid_unique" ON "user"("uid");
+CREATE UNIQUE INDEX "user_uid_unique" ON "users"("uid");
 
 -- AddForeignKey
-ALTER TABLE "session" ADD CONSTRAINT "session_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "user"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE "sessions" ADD CONSTRAINT "session_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
 

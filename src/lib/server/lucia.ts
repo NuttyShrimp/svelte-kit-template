@@ -9,7 +9,7 @@ import { PrismaAdapter } from '@lucia-auth/adapter-prisma';
 import { MicrosoftEntraId } from 'arctic';
 import { Lucia } from 'lucia';
 import { db } from './db';
-import type { user } from '@prisma/client';
+import type { User } from '@prisma/client';
 
 const adapter = new PrismaAdapter(db.session, db.user);
 
@@ -32,7 +32,7 @@ export const auth = new Lucia(adapter, {
 declare module 'lucia' {
 	interface Register {
 		Lucia: typeof auth;
-		DatabaseUserAttributes: Omit<user, 'id'>;
+		DatabaseUserAttributes: Omit<User, 'id'>;
 	}
 }
 
