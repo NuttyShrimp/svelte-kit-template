@@ -6,12 +6,12 @@ declare type NavbarItem = {
 
 export const navEntries: NavbarItem[] = [
 	{
-		title: "Test",
+		title: 'Test',
 		items: [
 			{
-				title: "Link",
-				href: "/",
-			},
-		],
-	},
+				title: 'Link',
+				href: '/'
+			}
+		]
+	}
 ];

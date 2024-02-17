@@ -1,13 +1,13 @@
-import fs from "node:fs";
-import path from "node:path";
-import { env } from "$env/dynamic/private";
+import fs from 'node:fs';
+import path from 'node:path';
+import { env } from '$env/dynamic/private';
 
 const pushLogToFile = (msg: Record<string, unknown>) => {
 	// Check if logs folder exist
-	const logPath = path.join(process.cwd(), "logs", "gelf.log");
+	const logPath = path.join(process.cwd(), 'logs', 'gelf.log');
 	if (!fs.existsSync(logPath)) {
 		fs.mkdirSync(logPath, {
-			recursive: true,
+			recursive: true
 		});
 	}
 
@@ -17,28 +17,28 @@ const pushLogToFile = (msg: Record<string, unknown>) => {
 
 const pushLogsToFile = (msgs: Record<string, unknown>[]) => {
 	// Check if logs folder exist
-	const logPath = path.join(process.cwd(), "logs", "gelf.log");
+	const logPath = path.join(process.cwd(), 'logs', 'gelf.log');
 	if (!fs.existsSync(logPath)) {
 		fs.mkdirSync(logPath, {
-			recursive: true,
+			recursive: true
 		});
 	}
 
 	// open & write msg
-	fs.appendFileSync(logPath, msgs.map((v) => JSON.stringify(v)).join("\n"));
+	fs.appendFileSync(logPath, msgs.map((v) => JSON.stringify(v)).join('\n'));
 };
 
 const readMissedLogs = (): Record<string, unknown>[] => {
-	const logPath = path.join(process.cwd(), "logs", "gelf.log");
+	const logPath = path.join(process.cwd(), 'logs', 'gelf.log');
 	if (!fs.existsSync(logPath)) {
 		return [];
 	}
 	const logs = fs.readFileSync(logPath, {
-		encoding: "utf-8",
+		encoding: 'utf-8'
 	});
 	// Clear file
-	fs.writeFileSync(logPath, "");
-	return logs.split("\n").map((log) => JSON.parse(log));
+	fs.writeFileSync(logPath, '');
+	return logs.split('\n').map((log) => JSON.parse(log));
 };
 
 let cleaningBacklog = false;
@@ -56,20 +56,20 @@ export const log = async (type: string, message: string, data: Record<string, st
 	const timestamp = Math.round(Date.now() / 1000);
 	const gelfMsg = {
 		// https://go2docs.graylog.org/5-0/getting_in_log_data/gelf.html?tocpath=Getting%20in%20Logs%7CLog%20Sources%7CGELF%7C_____0#GELFPayloadSpecification
-		version: "1.1",
+		version: '1.1',
 		host: env.ORIGIN,
 		short_message: message,
 		full_message: JSON.stringify(data, null, 2),
-		timestamp,
+		timestamp
 	};
 
 	try {
 		const resp = await fetch(env.GELF_ENDPOINT, {
-			method: "POST",
+			method: 'POST',
 			headers: {
-				"Content-Type": "application/json",
+				'Content-Type': 'application/json'
 			},
-			body: JSON.stringify(gelfMsg),
+			body: JSON.stringify(gelfMsg)
 		});
 		if (!resp.ok) {
 			pushLogToFile(gelfMsg);
@@ -86,11 +86,11 @@ export const log = async (type: string, message: string, data: Record<string, st
 		for (i; i < backlog.length; i++) {
 			try {
 				const resp = await fetch(env.GELF_ENDPOINT, {
-					method: "POST",
+					method: 'POST',
 					headers: {
-						"Content-Type": "application/json",
+						'Content-Type': 'application/json'
 					},
-					body: JSON.stringify(backlog[i]),
+					body: JSON.stringify(backlog[i])
 				});
 				if (!resp.ok) {
 					break;

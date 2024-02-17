@@ -1,12 +1,12 @@
-import { parse, stringify, uneval } from "devalue";
+import { parse, stringify, uneval } from 'devalue';
 
 export const transformer = {
 	input: {
 		serialize: (object: unknown) => stringify(object),
-		deserialize: (object: string) => parse(object),
+		deserialize: (object: string) => parse(object)
 	},
 	output: {
 		serialize: (object: unknown) => uneval(object),
-		deserialize: (object: string) => eval(`(${object})`),
-	},
+		deserialize: (object: string) => eval(`(${object})`)
+	}
 };

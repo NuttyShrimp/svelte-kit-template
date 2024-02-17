@@ -1,15 +1,15 @@
-import { dev } from "$app/environment";
-import { ORIGIN } from "$env/static/private";
-import mjml2html from "mjml";
-import type { SvelteComponent } from "svelte";
-import type { create_ssr_component } from "svelte/internal";
+import { dev } from '$app/environment';
+import { ORIGIN } from '$env/static/private';
+import mjml2html from 'mjml';
+import type { SvelteComponent } from 'svelte';
+import type { create_ssr_component } from 'svelte/internal';
 
 const stripSvelteClasses = (html: string) =>
-	html.replaceAll(/class="s-[\w-]+"/g, "").replaceAll(/data-svelte-h="svelte-[\w]+"/g, "");
+	html.replaceAll(/class="s-[\w-]+"/g, '').replaceAll(/data-svelte-h="svelte-[\w]+"/g, '');
 
 export const renderComponent = <Props extends Record<string, unknown>>(
 	component: new (...args: unknown[]) => SvelteComponent<Props>,
-	props?: Props,
+	props?: Props
 ): { css: Record<string, unknown>; body: string } => {
 	const ssrComponent = component as unknown as ReturnType<typeof create_ssr_component>;
 
@@ -20,7 +20,7 @@ export const renderComponent = <Props extends Record<string, unknown>>(
 
 export const renderHtmlTemplate = <Props extends Record<string, unknown>>(
 	component: new (...args: unknown[]) => SvelteComponent<Props>,
-	props: Props,
+	props: Props
 ) => {
 	const { body, css } = renderComponent(component, props);
 	const mjml = `
@@ -46,7 +46,7 @@ export const renderHtmlTemplate = <Props extends Record<string, unknown>>(
           </mj-column>
 
           <mj-column width="25%">
-            <mj-image src="${dev ? "" : ORIGIN}/logo.png" width="120px" />
+            <mj-image src="${dev ? '' : ORIGIN}/logo.png" width="120px" />
           </mj-column>
         </mj-section>
       </mj-body>

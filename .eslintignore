@@ -1,0 +1,14 @@
+.DS_Store
+node_modules
+/build
+/.svelte-kit
+/package
+.env
+.env.*
+!.env.example
+
+pnpm-lock.yaml
+flake.*
+
+# untils svelte 5
+svelte-internal.d.ts
