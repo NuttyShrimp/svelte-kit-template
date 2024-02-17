@@ -21,7 +21,7 @@
       in
       with pkgs; {
         devShells.default = pkgs.devshell.mkShell {
-          packages = [ nodejs nodePackages.pnpm postgresql_16 biome redis ];
+          packages = [ nodejs nodePackages.pnpm nodePackages.prisma postgresql_16 redis ];
           commands = [
             {
               name = "pg:setup";
@@ -53,12 +53,20 @@
             }
           ];
           env = [
-            {
-              name = "BIOME_BINARY";
-              value = "${pkgs.biome}/bin/biome";
-            }
-            { name = "DATABASE_HOST"; eval = "$PRJ_DATA_DIR/postgres"; }
+            { name = "DATABASE_URL"; eval = "postgresql://postgres:password@localhost/postgres?host=$PRJ_DATA_DIR/postgres"; }
             { name = "PGDATA"; eval = "$PRJ_DATA_DIR/postgres"; }
+                        {
+              name = "PRISMA_QUERY_ENGINE_BINARY";
+              value = "${prisma-engines}/bin/query_engine";
+            }
+            {
+              name = "PRISMA_QUERY_ENGINE_LIBRARY";
+              value = "${prisma-engines}/lib/libquery_engine.node";
+            }
+            {
+              name = "PRISMA_SCHEMA_ENGINE_BINARY";
+              value = "${pkgs.prisma-engines}/bin/schema-engine";
+            }
           ];
         };
       }
